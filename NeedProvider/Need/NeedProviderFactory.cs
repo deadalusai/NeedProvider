@@ -21,13 +21,20 @@ namespace Need
                                           .Where(i => i.GetGenericTypeDefinition() == typeof(INeed<>))
                                           .ToArray()
                        where needDefs.Any()
-                       select new { EntityType = type, NeedDefinitionTypes = needDefs };
+                       select new Tuple<Type, Type[]>(type, needDefs);
 
             return from s in sets
-                   let providers = (from defType in s.NeedDefinitionTypes
+                   let providers = (from defType in s.Item2
                                     let needType = defType.GetGenericArguments().First()
+                                    //--Invoke--
+                                    //let methodInfo = s.Item1.GetInterfaceMap(defType).TargetMethods.First()
+                                    //select new InvokeNeedProvider(needType, methodInfo))
+                                    //--Delegate--
+                                    //let methodInfo = s.Item1.GetInterfaceMap(defType).TargetMethods.First()
+                                    //select new DelegateNeedProvider(s.Item1, needType, methodInfo))
+                                    //--Dispatching--
                                     select new DispatchingNeedProvider(needType))
-                   select new NeedProviderSet(s.EntityType, providers.ToArray());
+                   select new NeedProviderSet(s.Item1, providers.ToArray());
         }
     }
 

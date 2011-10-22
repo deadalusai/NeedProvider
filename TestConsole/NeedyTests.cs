@@ -15,7 +15,7 @@ namespace NeedyTypeTest
 
             var serviceFactory = new ServiceFactory();
 
-            const int ITER_COUNT = 1000000; //1 million
+            const int ITER_COUNT = 100000; //100 thousand
 
             #region TypeCheck
             {
