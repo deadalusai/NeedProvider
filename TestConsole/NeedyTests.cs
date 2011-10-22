@@ -1,3 +1,4 @@
+
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -79,8 +80,7 @@ namespace NeedyTypeTest
 
             void INeed<Multiplier>.Accept(Multiplier service)
             {
-
-            }
+                            }
 
             void INeed<IServiceProvider>.Accept(IServiceProvider service)
             {
