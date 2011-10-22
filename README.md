@@ -33,25 +33,29 @@ class TestClass : INeed<IService> {
 ```
 
 A simple static factory class is provided for scanning an assembly for types implementing INeed. 
-The factory's output can be easily cached in a dictionary.
+The factory's output can be easily cached in a dictionary. This would usually be done at application start.
 
 ```csharp
-Assembly assm = Assembly.GetAssembly(typeof(Main));
-
-IEnumerable<NeedProviderSet> providerSets = NeedProviderFactory.BuildProviders(assm);
+void Setup() {
+	Assembly assm = Assembly.GetAssembly(typeof(Main));
+	
+	IEnumerable<NeedProviderSet> providerSets = NeedProviderFactory.BuildProviders(assm);
+}
 ```
 
 Each NeedProviderSet maps a Type to a set of NeedProviders which can satisy its INeed requirements.
 
 ```csharp
-TestClass test = new TestClass();
-
-IServiceProvider serviceProvider = GetServiceProvider();
-
-NeedProviderSet providerSet = providerSets.First(p => p.EntityType == typeof(TestClass));
-
-foreach (INeedProvider provider in providerSet.Providers)
-	provider.ProvideFor(test, serviceProvider);
+void Runtime() {
+	TestClass test = RetrieveTestClassFromORM();
+	
+	IServiceProvider serviceProvider = GetServiceProvider();
+	
+	NeedProviderSet providerSet = providerSets.First(p => p.EntityType == typeof(TestClass));
+	
+	foreach (INeedProvider provider in providerSet.Providers)
+		provider.ProvideFor(test, serviceProvider);
+}
 ```
 
 Each provider retrieves the appropriate service via the System.IServiceProvider instance, and applies it to
