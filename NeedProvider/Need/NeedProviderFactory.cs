@@ -12,7 +12,7 @@ namespace Need
         /// <summary>
         /// Note: the providerType is just a hack to control the output of this factory
         /// </summary>
-        public static IEnumerable<NeedProviderSet> BuildProviders(Assembly scanAssembly, Type providerType)
+        public static IEnumerable<NeedProviderSet> BuildProviders(Assembly scanAssembly)
         {
             //Find the types which implement INeed<>
             var sets = from type in scanAssembly.GetTypes()
@@ -26,23 +26,8 @@ namespace Need
             return from s in sets
                    let providers = (from defType in s.NeedDefinitionTypes
                                     let needType = defType.GetGenericArguments().First()
-                                    let interfaceMap = s.EntityType.GetInterfaceMap(defType)
-                                    select BuildNeedProvider(providerType, s.EntityType, needType, interfaceMap.TargetMethods.First()))
+                                    select new DispatchingNeedProvider(needType))
                    select new NeedProviderSet(s.EntityType, providers.ToArray());
-        }
-
-        public static INeedProvider BuildNeedProvider(Type providerType, Type entityType, Type needType, MethodInfo acceptMethodInfo)
-        {
-            if (providerType == typeof(DelegateNeedProvider))
-                return new DelegateNeedProvider(entityType, needType, acceptMethodInfo);
-
-            if (providerType == typeof(InvokeNeedProvider))
-                return new InvokeNeedProvider(entityType, needType, acceptMethodInfo);
-
-            if (providerType == typeof(DispatchingNeedProvider))
-                return new DispatchingNeedProvider(entityType, needType, acceptMethodInfo);
-
-            throw new InvalidOperationException("What are you doing? Type not supported: " + providerType);
         }
     }
 

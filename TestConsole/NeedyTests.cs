@@ -15,7 +15,7 @@ namespace NeedyTypeTest
 
             var serviceFactory = new ServiceFactory();
 
-            const int ITER_COUNT = 100000;
+            const int ITER_COUNT = 1000000; //1 million
 
             #region TypeCheck
             {
@@ -35,7 +35,7 @@ namespace NeedyTypeTest
                         ((INeed<IServiceProvider>)instance).Accept((IServiceProvider)serviceFactory.GetService(typeof(IServiceProvider)));
                 }
                 sw.Stop();
-                Console.WriteLine("Simple type check: {0}", sw.ElapsedTicks);
+                Console.WriteLine("Simple type check: {0}", sw.Elapsed);
             }
             #endregion
 
@@ -43,41 +43,29 @@ namespace NeedyTypeTest
             {
                 var assm = Assembly.GetAssembly(typeof(NeedyTests));
 
-                var providerTypes = new[] {
-                    typeof(Need.Providers.DispatchingNeedProvider),
-                    typeof(Need.Providers.InvokeNeedProvider),
-                    typeof(Need.Providers.DelegateNeedProvider),
-                };
-
-                foreach (var providerType in providerTypes)
-                {
-                    IDictionary<Type, INeedProvider[]> needProviderCache =
-                        NeedProviderFactory.BuildProviders(assm, providerType)
+                IDictionary<Type, INeedProvider[]> needProviderCache =
+                        NeedProviderFactory.BuildProviders(assm)
                                            .ToDictionary(k => k.EntityType, v => v.Providers);
 
-                    var sw = Stopwatch.StartNew();
-                    for (int i = 0; i < ITER_COUNT; i++)
-                    {
-                        var providers = needProviderCache[instance.GetType()];
+                var sw = Stopwatch.StartNew();
+                for (int i = 0; i < ITER_COUNT; i++)
+                {
+                    var providers = needProviderCache[instance.GetType()];
 
-                        //for (int y = 0; y < providers.Length; y++)
-                        //    providers[y].ProvideFor(instance, serviceFactory);
-                        foreach (var provider in providers)
-                            provider.ProvideFor(instance, serviceFactory);
-                    }
-                    sw.Stop();
-
-                    Console.WriteLine("{0}: {1}", providerType.Name, sw.ElapsedTicks);
+                    foreach (INeedProvider provider in providers)
+                        provider.ProvideFor(instance, serviceFactory);
                 }
+                sw.Stop();
+
+                Console.WriteLine("NeedProvider: {0}", sw.Elapsed);
             }
             #endregion
         }
 
-        private class Test :
-            INeed<Adder>,
-            INeed<Subtractor>,
-            INeed<Multiplier>,
-            INeed<IServiceProvider>
+        private class Test : INeed<Adder>,
+                             INeed<Subtractor>,
+                             INeed<Multiplier>,
+                             INeed<IServiceProvider>
         {
             void INeed<Adder>.Accept(Adder service)
             {

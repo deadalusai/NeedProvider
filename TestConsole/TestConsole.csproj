@@ -8,7 +8,7 @@
     <ProjectGuid>{FC757380-0F78-42AE-8E2C-BA25E6F9056C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>NeedyTypeTest</RootNamespace>
-    <AssemblyName>NeedyTypeTest</AssemblyName>
+    <AssemblyName>test</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
