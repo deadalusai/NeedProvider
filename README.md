@@ -3,7 +3,7 @@ NeedProvider
 
 ### Description
 
-A set of assemblies for providing interface-based dependancy injection/object hydration.
+A set of assemblies for providing interface-based dependency injection/object hydration.
 
 ### How it works
 
@@ -14,7 +14,7 @@ Dependancies are accepted through those same interfaces.
 
 This is intended for use in situations where constructor injection and other traditional avenues are 
 not viable, for instance when injecting dependancies into entities returned by an ORM such as 
-Lightspeed, Entity Framework and NHibernate.
+Lightspeed, Entity Framework or NHibernate.
 
 ### Examples
 
@@ -31,3 +31,28 @@ class TestClass : INeed<IService> {
 	}
 }
 ```
+
+A simple static factory class is provided for scanning an assembly for types implementing INeed. 
+The factory's output can be easily cached in a dictionary.
+
+```csharp
+Assembly assm = Assembly.GetAssembly(typeof(Main));
+
+IEnumerable<NeedProviderSet> providerSets = NeedProviderFactory.BuildProviders(assm);
+```
+
+Each NeedProviderSet maps a Type to a set of NeedProviders which can satisy its INeed requirements.
+
+```csharp
+TestClass test = new TestClass();
+
+IServiceProvider serviceProvider = GetServiceProvider();
+
+NeedProviderSet providerSet = providerSets.First(p => p.EntityType == typeof(TestClass));
+
+foreach (INeedProvider provider in providerSet.Providers)
+	provider.ProvideFor(test, serviceProvider);
+```
+
+Each provider retrieves the appropriate service via the System.IServiceProvider instance, and applies it to
+the object through its implementation of the INeed interface method Accept(TService service).
