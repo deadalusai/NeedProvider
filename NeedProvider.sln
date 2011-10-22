@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{491234E0-D0DA-445A-8AC4-C983999728EE}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeedProvider", "NeedProvider\NeedProvider.csproj", "{D8ACF11C-9136-4910-81E6-B0AB39E94F9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{FC757380-0F78-42AE-8E2C-BA25E6F9056C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8ACF11C-9136-4910-81E6-B0AB39E94F9D}.Debug|x86.ActiveCfg = Debug|x86
+		{D8ACF11C-9136-4910-81E6-B0AB39E94F9D}.Debug|x86.Build.0 = Debug|x86
+		{D8ACF11C-9136-4910-81E6-B0AB39E94F9D}.Release|x86.ActiveCfg = Release|x86
+		{D8ACF11C-9136-4910-81E6-B0AB39E94F9D}.Release|x86.Build.0 = Release|x86
+		{FC757380-0F78-42AE-8E2C-BA25E6F9056C}.Debug|x86.ActiveCfg = Debug|x86
+		{FC757380-0F78-42AE-8E2C-BA25E6F9056C}.Debug|x86.Build.0 = Debug|x86
+		{FC757380-0F78-42AE-8E2C-BA25E6F9056C}.Release|x86.ActiveCfg = Release|x86
+		{FC757380-0F78-42AE-8E2C-BA25E6F9056C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = TestConsole\TestConsole.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchBody = True
+		$2.PropertyGetBraceStyle = NextLine
+		$2.PropertySetBraceStyle = NextLine
+		$2.EventAddBraceStyle = NextLine
+		$2.EventRemoveBraceStyle = NextLine
+		$2.StatementBraceStyle = NextLine
+		$2.BeforeMethodDeclarationParentheses = False
+		$2.BeforeMethodCallParentheses = False
+		$2.BeforeConstructorDeclarationParentheses = False
+		$2.BeforeIndexerDeclarationBracket = False
+		$2.BeforeDelegateDeclarationParentheses = False
+		$2.NewParentheses = False
+		$2.SpacesBeforeBrackets = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.NoTabsAfterNonTabs = True
+		$3.RemoveTrailingWhitespace = True
+		$3.inheritsSet = VisualStudio
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+	EndGlobalSection
+EndGlobal
