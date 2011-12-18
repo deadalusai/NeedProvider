@@ -3,7 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{491234E0-D0DA-445A-8AC4-C983999728EE}"
 	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -26,7 +25,8 @@ Global
 		{FC757380-0F78-42AE-8E2C-BA25E6F9056C}.Release|x86.ActiveCfg = Release|x86
 		{FC757380-0F78-42AE-8E2C-BA25E6F9056C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = TestConsole\TestConsole.csproj

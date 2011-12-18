@@ -16,7 +16,7 @@ namespace NeedyTypeTest
 
             var serviceFactory = new ServiceFactory();
 
-            const int ITER_COUNT = 100000; //100 thousand
+            const int ITER_COUNT = 1000000; //100 thousand
 
             #region TypeCheck
             {
@@ -51,7 +51,7 @@ namespace NeedyTypeTest
                 var sw = Stopwatch.StartNew();
                 for (int i = 0; i < ITER_COUNT; i++)
                 {
-                    var providers = needProviderCache[instance.GetType()];
+                    var providers = needProviderCache[typeof(Test)];
 
                     foreach (INeedProvider provider in providers)
                         provider.ProvideFor(instance, serviceFactory);

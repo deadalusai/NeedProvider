@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 using Need.Providers;
+using NeedProvider.Need.Providers;
 
 namespace Need
 {
@@ -16,39 +17,42 @@ namespace Need
         public static IEnumerable<NeedProviderSet> BuildProviders(Assembly scanAssembly)
         {
             //Find the types which implement INeed<>
-            var sets = from type in scanAssembly.GetTypes()
+            var entityDefinitions = from type in scanAssembly.GetTypes()
                        let needDefs = type.GetInterfaces()
                                           .Where(i => i.IsGenericType)
                                           .Where(i => i.GetGenericTypeDefinition() == typeof(INeed<>))
                                           .ToArray()
                        where needDefs.Any()
-                       select new Tuple<Type, Type[]>(type, needDefs);
+                       select new { EntityType = type, NeedDefinitions = needDefs };
 
-            return from s in sets
-                   let providers = (from defType in s.Item2
+            return from entity in entityDefinitions
+                   let providers = (from defType in entity.NeedDefinitions
                                     let needType = defType.GetGenericArguments().First()
                                     //--Invoke--
                                     //let methodInfo = s.Item1.GetInterfaceMap(defType).TargetMethods.First()
                                     //select new InvokeNeedProvider(needType, methodInfo))
                                     //--Delegate--
                                     //let methodInfo = s.Item1.GetInterfaceMap(defType).TargetMethods.First()
-                                    //select new DelegateNeedProvider(s.Item1, needType, methodInfo))
+                                    //select new DelegateNeedProvider(s.EntityType, needType, methodInfo))
                                     //--Dispatching--
-                                    select new DispatchingNeedProvider(needType))
-                   select new NeedProviderSet(s.Item1, providers.ToArray());
+                                    //select new DispatchingNeedProvider(needType))
+                                    //--Compiled Delegate--
+                                    let methodInfo = entity.EntityType.GetInterfaceMap(defType).TargetMethods.First()
+                                    select new CompiledDelegateNeedProvider(entity.EntityType, needType, methodInfo))
+                   select new NeedProviderSet(entity.EntityType, providers.ToArray());
         }
     }
 
-    public struct NeedProviderSet
+    public class NeedProviderSet
     {
-        public readonly Type EntityType;
-        public readonly INeedProvider[] Providers;
-
         public NeedProviderSet(Type entityType, INeedProvider[] needProviders)
-            : this()
         {
             EntityType = entityType;
             Providers = needProviders;
         }
+
+        public Type EntityType { get; private set; }
+        
+        public INeedProvider[] Providers { get; private set; }
     }
 }
