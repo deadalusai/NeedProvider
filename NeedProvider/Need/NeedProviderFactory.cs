@@ -3,8 +3,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
-
-using Need.Providers;
 using NeedProvider.Need.Providers;
 
 namespace Need
@@ -28,16 +26,14 @@ namespace Need
             return from entity in entityDefinitions
                    let providers = (from defType in entity.NeedDefinitions
                                     let needType = defType.GetGenericArguments().First()
+                                    let methodInfo = entity.EntityType.GetInterfaceMap(defType).TargetMethods.First()
                                     //--Invoke--
-                                    //let methodInfo = s.Item1.GetInterfaceMap(defType).TargetMethods.First()
                                     //select new InvokeNeedProvider(needType, methodInfo))
                                     //--Delegate--
-                                    //let methodInfo = s.Item1.GetInterfaceMap(defType).TargetMethods.First()
-                                    //select new DelegateNeedProvider(s.EntityType, needType, methodInfo))
+                                    //select new DelegateNeedProvider(entity.EntityType, needType, methodInfo))
                                     //--Dispatching--
                                     //select new DispatchingNeedProvider(needType))
                                     //--Compiled Delegate--
-                                    let methodInfo = entity.EntityType.GetInterfaceMap(defType).TargetMethods.First()
                                     select new CompiledDelegateNeedProvider(entity.EntityType, needType, methodInfo))
                    select new NeedProviderSet(entity.EntityType, providers.ToArray());
         }

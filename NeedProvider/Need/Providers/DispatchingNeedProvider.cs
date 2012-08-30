@@ -1,17 +1,12 @@
 
 using System;
-using System.Linq;
-using System.Reflection;
-using System.Collections.Generic;
-
-using Need;
 
 namespace Need.Providers
 {
     public class DispatchingNeedProvider : INeedProvider
     {
-        private Type _needType;
-        private Dispatcher _dispatcher;
+        private readonly Type _needType;
+        private readonly Dispatcher _dispatcher;
 
         public DispatchingNeedProvider(Type needType)
         {

@@ -1,19 +1,15 @@
 
 using System;
-using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
-
-using Need;
 
 namespace Need.Providers
 {
     public class DelegateNeedProvider : INeedProvider
     {
-        private Type _entityType;
-        private Type _needType;
-        private MethodInfo _acceptMethodInfo;
-        private Delegate _applyDelegate;
+        private readonly Type _entityType;
+        private readonly Type _needType;
+        private readonly MethodInfo _acceptMethodInfo;
+        private readonly Delegate _applyDelegate;
     
         public DelegateNeedProvider(Type entityType, Type needType, MethodInfo acceptMethodInfo)
         {
@@ -23,7 +19,7 @@ namespace Need.Providers
             _applyDelegate = BuildApplyDelegate();
         }
 
-        public void ProvideFor(object entity, System.IServiceProvider serviceProvider)
+        public void ProvideFor(object entity, IServiceProvider serviceProvider)
         {
             _applyDelegate.DynamicInvoke(entity, serviceProvider.GetService(_needType));
         }

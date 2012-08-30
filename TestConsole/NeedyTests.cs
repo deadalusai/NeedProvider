@@ -16,7 +16,7 @@ namespace NeedyTypeTest
 
             var serviceFactory = new ServiceFactory();
 
-            const int ITER_COUNT = 1000000; //100 thousand
+            const int ITER_COUNT = 1000000; //1 million iterations
 
             #region TypeCheck
             {
@@ -68,28 +68,29 @@ namespace NeedyTypeTest
                              INeed<Multiplier>,
                              INeed<IServiceProvider>
         {
+            private Adder _adderService;
+            private Subtractor _subtractorService;
+            private Multiplier _multiplierService;
+            private IServiceProvider _serviceProvider;
+
             void INeed<Adder>.Accept(Adder service)
             {
-
+                _adderService = service;
             }
 
             void INeed<Subtractor>.Accept(Subtractor service)
             {
-
+                _subtractorService = service;
             }
 
             void INeed<Multiplier>.Accept(Multiplier service)
             {
-                            }
+                _multiplierService = service;
+            }
 
             void INeed<IServiceProvider>.Accept(IServiceProvider service)
             {
-
-            }
-
-            public int Apply(int input)
-            {
-                throw new NotImplementedException();
+                _serviceProvider = service;
             }
         }
     }
@@ -120,7 +121,7 @@ namespace NeedyTypeTest
 
     public class ServiceFactory : IServiceProvider
     {
-        private Dictionary<Type, Func<object>> _serviceBuilderCache;
+        private readonly Dictionary<Type, Func<object>> _serviceBuilderCache;
 
         public ServiceFactory()
         {

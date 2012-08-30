@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Need;
 using System.Reflection;
 using System.Linq.Expressions;
@@ -10,10 +7,10 @@ namespace NeedProvider.Need.Providers
 {
     public class CompiledDelegateNeedProvider : INeedProvider
     {
-        private Type _entityType;
-        private Type _needType;
-        private MethodInfo _acceptMethodInfo;
-        private Action<object, object> _applyAction;
+        private readonly Type _entityType;
+        private readonly Type _needType;
+        private readonly MethodInfo _acceptMethodInfo;
+        private readonly Action<object, object> _applyAction;
 
         public CompiledDelegateNeedProvider(Type entityType, Type needType, MethodInfo acceptMethodInfo)
         {
@@ -23,7 +20,7 @@ namespace NeedProvider.Need.Providers
             _applyAction = BuildAction();
         }
 
-        public void ProvideFor(object entity, System.IServiceProvider serviceProvider)
+        public void ProvideFor(object entity, IServiceProvider serviceProvider)
         {
             _applyAction(entity, serviceProvider.GetService(_needType));
         }
